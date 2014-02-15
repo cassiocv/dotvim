@@ -18,14 +18,3 @@ git submodule init
 
 git submodule update
 
-
-
-*Instalar um plugin:*
-
-cd ~/.vim
-
-git submodule add http://github.com/tpope/vim-fugitive.git bundle/fugitive
-
-git commit -m "Instalação de fugitive"
-
-git push
