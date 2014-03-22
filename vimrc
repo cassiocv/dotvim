@@ -11,14 +11,18 @@ Bundle 'gmarik/vundle'
 Bundle 'jamessan/vim-gnupg'
 Bundle 'Rykka/riv.vim'
 Bundle 'fholgado/minibufexpl.vim'
+Bundle 'bkbncn/vim-colorschemes-picker'
+Bundle 'scrooloose/nerdcommenter'
 
 " :BundleList          - list configured bundles
 " :BundleInstall(!)    - install (update) bundles
 " see :h vundle for more details or wiki for FAQ
 
 filetype plugin indent on
-autocmd filetype python set expandtab
+autocmd filetype python setlocal expandtab
+autocmd filetype text setlocal spell
 syntax on
+" Fim do 'Deve estar no início do arquivo'.
 
 set incsearch
 set hls
@@ -29,7 +33,7 @@ set history=1000
 set spelllang=pt_br
 set undolevels=500
 set autoindent
-" set smartindent
+" set cindent
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
@@ -41,6 +45,7 @@ set visualbell
 set ignorecase
 set smartcase
 set formatprg=par\ -qr
+set foldcolumn=5
 
 silent! set guifont=Inconsolata\ 12
 set nu
@@ -61,7 +66,7 @@ map <F12> :set number!<Bar>set number?<CR>
 " de: \sv
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
-" Apresenta caracteres não visíveis:
+" Apresenta caracteres não visíveis com \l:
 nmap <leader>l :set list!<CR>
 set listchars=tab:▸\ ,eol:¬
 
@@ -74,11 +79,14 @@ nnoremap <F1> <ESC>
 vnoremap <F1> <ESC>
 
 " \v seleciona um texto recém colado (mas acho que só funciona com o put):
-nnoremap <leader>v V`]
+" nnoremap <leader>v V`]
 
-" Chama o formatador de parágrafos ``par`` com algumas opções (já passando o
+" \p chama o formatador de parágrafos ``par`` com algumas opções (já passando o
 " valor de ``tw``:
 nmap <leader>p vip:!par -qrw<c-r>=&tw<cr><cr>
+
+" Opção para salvar o arquivo com \w:
+nnoremap <leader>w :w<CR>
 
 " Existe uma opção para utilizar somente as Expressões regulares oficiais do
 " Python, no lugar daquelas utilizadas internamente por Vim. Descomente as
@@ -89,9 +97,18 @@ nmap <leader>p vip:!par -qrw<c-r>=&tw<cr><cr>
 " Transformar jj em ESC:
 inoremap jj <ESC>
 
+" Show syntax highlighting groups for word under cursor with Ctrl-Shift-P:
+nmap <C-S-P> :call <SID>SynStack()<CR>
+function! <SID>SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+
 " Transforma vim num editor de textos:
 func! WordProcessorMode() 
-  colorscheme taqua
+  " colorscheme taqua
   setlocal linespace=3
   silent! setlocal guifont=Inconsolata\ 13
   setlocal formatoptions=tcq2nwa
@@ -109,7 +126,7 @@ com! WP call WordProcessorMode()
 
 " Supostamente desfaz os efeitos de WordProcessorMode (:WP)
 func! NormalMode()
-  colorscheme manuscript
+  " colorscheme manuscript
   setlocal linespace=0
   silent! setlocal guifont=Inconsolata\ 12
   setlocal textwidth=0

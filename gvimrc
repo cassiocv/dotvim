@@ -4,6 +4,6 @@ set guioptions -=T
 "set visualbell t_vb=
 "set nu
 ""colorscheme silent
-colorscheme manuscript
+"colorscheme manuscript
 map <Down> gj
 map <Up> gk
